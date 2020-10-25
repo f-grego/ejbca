@@ -1,13 +1,28 @@
 <template>
   <div id="app">
     <md-toolbar>
-      <h3 class="md-title">{{$route.name}}</h3>
+      <h3 class="md-title">{{ headerTitle }}</h3>
     </md-toolbar>
     
     <router-view />
   </div>
 </template>
 
+<script>
+export default {
+  data: () => ({
+    title: ""
+  }),
+  mounted() {
+    this.$root.$on("setTitle", title => this.title = title)
+  },
+  computed: {
+    headerTitle() {
+      return (this.title !== "" && this.$route.meta.title === "") ? this.title : this.$route.meta.title
+    }
+  }
+}
+</script>
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

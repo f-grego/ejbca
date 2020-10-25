@@ -21,15 +21,11 @@
           <md-table-row slot="md-table-row" slot-scope="{ item }" md-selectable="multiple">
             <md-table-cell md-label="Name" md-sort-by="name">{{ item.name }}</md-table-cell>
             <md-table-cell md-label="" md-sort-by="actions">
-              <md-button class="md-icon-button md-raised md-primary" @click="view(item)">
+              <md-button class="md-icon-button md-raised md-primary" @click="view(item)" v-b-tooltip.hover :title="`View ${item.name}`">
                 <md-icon>info</md-icon>
               </md-button>
 
-              <md-button class="md-icon-button md-raised">
-                <md-icon>edit</md-icon>
-              </md-button>
-
-              <md-button class="md-icon-button md-raised md-accent" @click="deleteCertificates(item.id)">
+              <md-button class="md-icon-button md-raised md-accent" @click="deleteCertificates(item.id)"  v-b-tooltip.hover :title="`Delete ${item.name}` ">
                 <md-icon>delete</md-icon>
               </md-button>
             </md-table-cell>
@@ -76,13 +72,12 @@ export default {
       return `${count} certification${plural} selected`
     },
     view(certificate) {
-      router.push({ name: "view", params: { id: certificate.id } })
+      router.push({ name: "certificate", params: { id: certificate.id } })
     },
     async deleteCertificates(ids) {
       let result
       const idsArray = (typeof ids === "number") ? [ids] : ids
-      const names = this.certificates.filter( item => idsArray.includes(item.id))
-          .map(item => item.name)
+      const names = this.certificates.filter( item => idsArray.includes(item.id)).map(item => item.name)
       const res = await this.$dialog.confirm({ text: `Do you really want to delete ${names}?`})
 
       if (!res)

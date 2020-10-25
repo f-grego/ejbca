@@ -20,5 +20,8 @@ Vue.use(Dialog)
 
 new Vue({
   router,
-  render: h => h(App)
+  render: h => h(App),
+  data: () => ({
+    newCertificates: []
+  })
 }).$mount("#app");

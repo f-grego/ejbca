@@ -24,7 +24,7 @@
 <script>
 import { ValidationObserver, ValidationProvider, extend } from "vee-validate";
 import { required, min } from "vee-validate/dist/rules";
-import CertificationService from "@/services/CertificationService";
+import CertificationService, {defaultItem} from "@/services/CertificationService";
 
 extend("required", {
   ...required,
@@ -35,10 +35,6 @@ extend("min", {
   ...min,
   message: "This field is required"
 });
-
-const defaultItem = {
-  name: ""
-}
 
 export default {
   name: "NewCertificateModal",
@@ -56,6 +52,7 @@ export default {
         return
 
       const certificate = await CertificationService.create(this.certificate)
+      this.$root.newCertificates = [...this.$root.newCertificates, certificate]
       this.$root.$emit("create-certificate", certificate)
       this.$bvModal.hide("new-certification")
       this.certificate = { ...defaultItem } //clear form
